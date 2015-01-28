@@ -12,7 +12,7 @@ function Swipe(container, options) {
 
   // utilities
   var noop = function() {}; // simple no operation function
-  var offloadFn = function(fn) { setTimeout(fn || noop, 0) }; // offload a functions execution
+  var offloadFn = function(fn) { setTimeout(fn || noop, 0); }; // offload a functions execution
 
   // check browser capabilities
   var browser = {
@@ -417,8 +417,8 @@ function Swipe(container, options) {
       }
 
       // kill touchmove and touchend event listeners until touchstart called again
-      element.removeEventListener('touchmove', events, false)
-      element.removeEventListener('touchend', events, false)
+      element.removeEventListener('touchmove', events, false);
+      element.removeEventListener('touchend', events, false);
 
     },
     transitionEnd: function(event) {
@@ -432,8 +432,7 @@ function Swipe(container, options) {
       }
 
     }
-
-  }
+  };
 
   // trigger setup
   setup();
@@ -461,7 +460,7 @@ function Swipe(container, options) {
 
   } else {
 
-    window.onresize = function () { setup() }; // to play nice with old IE
+    window.onresize = function () { setup(); }; // to play nice with old IE
 
   }
 
@@ -554,10 +553,26 @@ function Swipe(container, options) {
       }
 
     }
-  }
-
+  };
 }
 
+(function (root, factory) {
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = factory(require('swipe'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['swipe'], function (swipe) {
+      return (root.returnExportsGlobal = factory(swipe));
+    });
+  } else {
+    // Global Variables
+    root.returnExportsGlobal = factory(root.swipe);
+  }
+}(this, function (b) {
+  // Your actual module
+  return Swipe;
+}));
 
 if ( window.jQuery || window.Zepto ) {
   (function($) {
@@ -565,6 +580,6 @@ if ( window.jQuery || window.Zepto ) {
       return this.each(function() {
         $(this).data('Swipe', new Swipe($(this)[0], params));
       });
-    }
-  })( window.jQuery || window.Zepto )
+    };
+  })( window.jQuery || window.Zepto );
 }
